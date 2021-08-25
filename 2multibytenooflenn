@@ -1,0 +1,29 @@
+DATA SEGMENT 
+NUM1 DB 50H,20H,30H,40H,50H
+NUM2 DB 40H,50H,60H,90H,0A0H
+N    DB 5 
+RESULT DB 6 DUP(0)
+DATA ENDS 
+CODE SEGMENT 
+ASSUME CS:CODE, DS:DATA 
+START : MOV AX,DATA ;
+        MOV DS,AX ;
+        MOV CL, N ;
+        LEA SI, NUM1 ;
+        LEA DI, NUM2;
+        LEA BX, RESULT ;
+         CLC 
+BACK: MOV AL, [SI] ;
+      ADC AL , [DI];
+      MOV [BX],AL;
+      INC SI ;
+      INC DI ;
+      INC BX ;
+      DEC CL ;
+      JNZ BACK; 
+      JNC LAST ;
+MOV BYTE PTR[BX],01H;
+LAST : MOV AH,4CH;
+INT 21H ;
+CODE ENDS 
+END START 
